@@ -4,6 +4,8 @@ import HowGenerate from "../components/HowGenerate/HowGenerate.jsx"
 import WelcomeToAi from "../components/WelcomeToAi/WelcomeToAi.jsx"
 import WhatProvide from "../components/WhatProvide/WhatProvide.jsx"
 import Pricing from "../components/Pricing/Pricing.jsx"
+import BlogSec from "../components/BlogSec/BlogSec.jsx"
+import MainFooter from "../components/MainFooter/MainFooter.jsx"
 
 
 const HonePage = () => {
@@ -14,6 +16,8 @@ const HonePage = () => {
       <WelcomeToAi/>
       <WhatProvide/>
       <Pricing/>
+      <BlogSec/>
+      <MainFooter/>
     </div>
   )
 }

@@ -15,6 +15,7 @@ import demoimg8 from "./stable.png"
 import demoimg9 from "./Image-10-13.webp"
 import hand from "./Hand-12.png"
 import demoimg10 from "./Image-13-12.webp"
+import Lines from "./Line-1-12.webp"
 
 
 export{
@@ -33,4 +34,5 @@ export{
     demoimg9,
     hand,
     demoimg10,
+    Lines,
 }
