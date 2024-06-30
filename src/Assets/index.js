@@ -2,6 +2,19 @@ import img1 from "./prompthero-prompt-1ad017fe863.webp"
 import img2 from "./prompthero-prompt-85aa11db8db.webp"
 import img3 from "./prompthero-prompt-cd74ea1e7da.webp"
 import img4 from "./prompthero-prompt-d174e659992.webp"
+import img5 from "./prompthero-prompt-0e88cd72d7f.webp"
+import img6 from "./prompthero-prompt-4b522f4594b.webp"
+import img7 from "./prompthero-prompt-18ffd7c5013.webp"
+import img8 from "./prompthero-prompt-69b096082f3.webp"
+import img9 from "./prompthero-prompt-f572c9be3fa.webp"
+import img10 from "./prompthero-prompt-17dca190cc3.webp"
+import img11 from "./prompthero-prompt-3e95656a0e3.webp"
+import img12 from "./prompthero-prompt-1088dafdaee.webp"
+import img13 from "./prompthero-prompt-f2756c4febc.webp"
+import proimg from "./NorthmoorAI-74ef6aa6dcd.webp"
+
+
+
 import demoimg1 from "./Image-13-13.webp"
 import demoimg2 from "./Image-14-12.webp"
 import demoimg3 from "./Image-15-12.webp"
@@ -23,6 +36,15 @@ export{
     img2,
     img3,
     img4,
+    img5,
+    img6,
+    img7,
+    img8,
+    img9,
+    img10,
+    img11,
+    img12,
+    img13,
     demoimg1,
     demoimg2,
     demoimg3,
@@ -35,4 +57,5 @@ export{
     hand,
     demoimg10,
     Lines,
+    proimg,
 }

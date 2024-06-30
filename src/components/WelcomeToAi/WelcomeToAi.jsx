@@ -6,23 +6,39 @@ import {
   demoimg5,
   demoimg8,
   hand,
+  img11,
+  img12,
+  img13,
 } from "../../Assets";
 import Headings from "../roots/Headings";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { motion } from 'framer-motion';
+import useAnimateOnView from "../animations/motions"
 
 const WelcomeToAi = () => {
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+  const [ref1, inView1] = useAnimateOnView();
+  const [ref2, inView2] = useAnimateOnView();
+  const [ref3, inView3] = useAnimateOnView();
+  const [ref4, inView4] = useAnimateOnView();
+  const [ref5, inView5] = useAnimateOnView();
+
   return (
     <div className="welcome_sec">
       <div className="container">
         <div className="welcome_sec_warp">
           <div className="welcome_imges">
             <div className="welcome_img_row1">
-              <img src={demoimg6} alt="" className="welcome_img_top" />
-              <img src={demoimg9} alt="" className="welcome_img_bottom" />
+              <img src={img11} alt="" className="welcome_img_top" />
+              <img src={img12} alt="" className="welcome_img_bottom" />
             </div>
             <div className="welcome_img_row2">
-              <img src={demoimg5} alt="" className="welcome_img_top_right" />
+              <img src={img13} alt="" className="welcome_img_top_right" />
               {/* <img src={demoimg9} alt=""className='welcome_img_bottom_right'  /> */}
               <div className="welcome_img_bottom_right">
                 <p>Online AI Image Generator</p>
@@ -33,17 +49,32 @@ const WelcomeToAi = () => {
             <img src={hand} alt="" className="hand_img" />
           </div>
           <div className="welcome_content">
+            <motion.div ref={ref1}
+            initial="hidden"
+            animate={inView1 ? 'visible' : 'hidden'}
+            variants={variants}
+            transition={{ duration: 0.85 }}>
+
             <Headings
               title="Create Anything With "
               spanhead="Welcome To Ai"
               highlighted="AI image Generator"
-            />
-            <p>
+              />
+              </motion.div>
+            <motion.p ref={ref2}
+            initial="hidden"
+            animate={inView2 ? 'visible' : 'hidden'}
+            variants={variants}
+            transition={{ duration: 0.85 }}>
               We denounce with righteous indignation and dislike men who are
               beguiled and demoralized by the charms of pleasure of the moment
               blinded desire that they cannot foresee and trouble
-            </p>
-            <div className="lists_checks">
+            </motion.p>
+            <motion.div ref={ref3}
+            initial="hidden"
+            animate={inView3 ? 'visible' : 'hidden'}
+            variants={variants}
+            transition={{ duration: 0.85 }} className="lists_checks">
               <div className="list_item_check">
                 <IoIosCheckmarkCircle className="blue" />
                 <p>Save time Rapid AI-driven generation.</p>
@@ -56,14 +87,18 @@ const WelcomeToAi = () => {
                 <IoIosCheckmarkCircle className="blue" />
                 <p>Consistency Consistent code documentation</p>
               </div>
-            </div>
+            </motion.div>
             <div>
                 <div>
 
-            <a className="menu_btn">
+            <motion.a ref={ref4}
+            initial="hidden"
+            animate={inView4 ? 'visible' : 'hidden'}
+            variants={variants}
+            transition={{ duration: 0.85 }} className="menu_btn">
             Generate AI Image
                             <FaArrowRight/>
-                        </a>
+                        </motion.a>
                 </div>
             </div>
           </div>

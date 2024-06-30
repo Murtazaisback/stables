@@ -10,58 +10,59 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { FaArrowRight } from "react-icons/fa6";
 import { IoBrushOutline, IoSettingsOutline } from "react-icons/io5";
 import { img1, img2, img3, img4 } from "../../Assets";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import Navbar from './Navbar';
 
 
 const Header = () => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const variants = {
+    hidden: { opacity: 0, y: 100 },
+    visible: { opacity: 1, y: 0 },
+  };
     
   return (
     <>
-      <nav>
-        <div className="warp_container">
-            <div className="main_nav">
-
-        
-        <div className="logo">LOGO</div>
-        <div className="menu_nav">
-            <ul>
-                <li><a href="" className="active_a">Home</a></li>
-                <li><a href="">About us</a></li>
-                <li><a href="">Contact us</a></li>
-                <li><a href="">Use Case</a></li>
-                <li><a href="">Blog</a></li>
-            </ul>
-        </div>
-        <div className="menu_btn">
-            <a href="">Get Started</a>
-            <FaArrowRight/>
-        </div>
-        </div>
-        </div>
-      </nav>
+      <Navbar/>
       <div className="header">
         <div className="container">
             <div className="header_flex">
-                <div className="header_text">
-                    <span className="text_heading">Generate Online <br /> Artificial Intelligence</span>
-                    <span className="italc_heading">Text to Image</span>
+            <motion.div
+                className="header_text"
+                  >
+                    <motion.span ref={ref}
+                      initial="hidden"
+                      animate={inView ? 'visible' : 'hidden'}
+                      variants={variants}
+                      transition={{ duration: 0.75 }} className="text_heading">Generate Online <br /> Artificial Intelligence</motion.span>
+                    <motion.span ref={ref}
+                        initial="hidden"
+                        animate={inView ? 'visible' : 'hidden'}
+                        variants={variants}
+                        transition={{ duration: 0.5 }} className="italc_heading">Text to Image</motion.span>
                     <p className="heading_p">Autocomplete faster than thought can save you time and help you ship products faster</p>
                     <div className="prompt_warp">
-                    <div className="input_prompt">
+                    {/* <div className="input_prompt">
                         <div style={{display: "flex", alignItems: "center", gap: "10px" }}>
 
                         <IoBrushOutline/>
                         <input type="text" placeholder="Generate Creative image"  />
                         </div>
-                        <button className="menu_btn">Generate
+                    </div> */}
+                        <a className="menu_btn">Generate
                             <FaArrowRight/>
-                        </button>
-                    </div>
-                    <div className="prompt_box">
+                        </a>
+                    {/* <div className="prompt_box">
                         <IoSettingsOutline size={32} className="prompt_box_gear"/>
 
+                    </div> */}
                     </div>
-                    </div>
-                </div>
+                </motion.div>
             <div className="header_imgs">
             <Swiper
             slidesPerView={2}
@@ -89,7 +90,7 @@ const Header = () => {
             centeredSlides={true}
             loop={true}
             autoplay={{
-            delay: 2000,
+            delay: 3000,
           disableOnInteraction: false,
         }}
         navigation={false}

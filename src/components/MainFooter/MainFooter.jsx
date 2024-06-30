@@ -8,7 +8,7 @@ const MainFooter = () => {
         <div className="Main_footer_content">
             <div className="main_footer_text">
                 <div className="logo">logo</div>
-                <p>to notch you can find in world to notch  world to notch <br /> you can find in world</p>
+                <p>to notch you can find in world to notch  world to notch you can find in world</p>
                 <div className='footer_mail'>infomunai@gmail.com</div>
             </div>
             <div className="main_footer_letter">
