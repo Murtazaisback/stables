@@ -7,7 +7,7 @@ const GallerHeader = () => {
       <div className='gallery_header_content'>
 
         <h2>BrandName</h2>
-        <p className=''>The #1 website for NSFW image Generation. Search millions of AI images by tags like MOM, stepMom, huge boobs...</p>
+        <p className='search_p'>The #1 website for NSFW image Generation. Search millions of AI images by tags like MOM, stepMom, huge boobs...</p>
         <div className='post_img_info'>
         <div className='Search_box'>
             <input type="text" placeholder='Search NSFW images' />

@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { FaArrowRight } from "react-icons/fa6";
 import { IoBrushOutline, IoSettingsOutline } from "react-icons/io5";
-import { img1, img2, img3, img4 } from "../../Assets";
+import { img1, img2, img3, img4, img5, img6, img7, img8 } from "../../Assets";
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Navbar from './Navbar';
@@ -71,7 +71,7 @@ const Header = () => {
             centeredSlides={true}
             loop={true}
             autoplay={{
-            delay: 1000,
+            delay: 750,
           disableOnInteraction: false,
         }}
         navigation={false}
@@ -82,6 +82,10 @@ const Header = () => {
         <SwiperSlide><img src={img2} alt="" /></SwiperSlide>
         <SwiperSlide><img src={img3} alt="" /></SwiperSlide>
         <SwiperSlide><img src={img4} alt="" /></SwiperSlide>
+        <SwiperSlide><img src={img5} alt="" /></SwiperSlide>
+        <SwiperSlide><img src={img6} alt="" /></SwiperSlide>
+        <SwiperSlide><img src={img7} alt="" /></SwiperSlide>
+        <SwiperSlide><img src={img8} alt="" /></SwiperSlide>
       </Swiper>
             <Swiper
             slidesPerView={2}
@@ -90,7 +94,7 @@ const Header = () => {
             centeredSlides={true}
             loop={true}
             autoplay={{
-            delay: 3000,
+            delay: 500,
           disableOnInteraction: false,
         }}
         navigation={false}
