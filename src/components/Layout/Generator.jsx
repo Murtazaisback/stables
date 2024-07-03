@@ -35,6 +35,7 @@ const Generator = ({ addPrediction }) => {
     "Character (beta)": ["heroic", "villainous", "neutral"],
   };
 
+  
   const handleTagSelect = (tag) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [...prevTags, tag]
@@ -281,6 +282,8 @@ const Generator = ({ addPrediction }) => {
                 defaultValue="39287"
               />
             </div>
+            <p>Status: {prediction.status}</p>
+            {error && <p>Error: {error}</p>}
           </div>
         </div>
       </form>
