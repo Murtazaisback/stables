@@ -54,7 +54,7 @@ const Generator = ({ addPrediction }) => {
     const promptTags = [...defaultTags, ...selectedTags].join(", ");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/predictions", {
+      const response = await axios.post("https://stable-e-2.onrender.com/api/predictions", {
         prompt: promptTags,
         seed: parseInt(seed.value),
         width: parseInt(width),
@@ -75,7 +75,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/predictions/${id}`);
+      const response = await axios.get(`https://stable-e-2.onrender.com/api/predictions/${id}`);
       setPrediction(response.data);
 
       if (response.data.status === "succeeded" || response.data.status === "failed") {
@@ -95,7 +95,7 @@ const Generator = ({ addPrediction }) => {
     try {
       const { seed } = document.forms[0];
       for (const url of imageUrls) {
-        await axios.post("http://localhost:5000/api/predictions/save-images", {
+        await axios.post("https://stable-e-2.onrender.com/api/predictions/save-images", {
           prompt: [...defaultTags, ...selectedTags].join(", "),
           seed: parseInt(seed.value),
           width: parseInt(width),
