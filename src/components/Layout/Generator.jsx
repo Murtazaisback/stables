@@ -35,7 +35,6 @@ const Generator = ({ addPrediction }) => {
     "Character (beta)": ["heroic", "villainous", "neutral"],
   };
 
-  
   const handleTagSelect = (tag) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [...prevTags, tag]
@@ -51,7 +50,7 @@ const Generator = ({ addPrediction }) => {
     setIsLoading(true);
     setError(null);
 
-    const { seed, model } = e.target.elements;
+    const { seed,  } = e.target.elements;
     const promptTags = [...defaultTags, ...selectedTags].join(", ");
 
     try {
@@ -61,14 +60,13 @@ const Generator = ({ addPrediction }) => {
         width: parseInt(width),
         height: parseInt(height),
         num_outputs: parseInt(numOutputs),
-        model: model.value,
       });
 
-      console.log("API Response:", response.data); // Log API response for debugging
+      console.log("API Response:", response.data);
       setPrediction(response.data);
       intervalId = setInterval(() => pollPrediction(response.data.id), 2000);
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message); // Log error for debugging
+      console.error("Error:", error.response ? error.response.data : error.message);
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
     }
@@ -95,20 +93,19 @@ const Generator = ({ addPrediction }) => {
   const sendGeneratedImages = async (imageUrls) => {
     try {
       const { seed } = document.forms[0];
-      for (const url of imageUrls) {
-        await axios.post("https://stable-e-axz2.onrender.com/api/predictions/save-images", {
-          prompt: [...defaultTags, ...selectedTags].join(", "),
-          seed: parseInt(seed.value),
-          width: parseInt(width),
-          height: parseInt(height),
-          imageUrls: [url],
-        });
-      }
+      await axios.post("https://stable-e-axz2.onrender.com/api/predictions/save-images", {
+        prompt: [...defaultTags, ...selectedTags].join(", "),
+        seed: parseInt(seed.value),
+        width: parseInt(width),
+        height: parseInt(height),
+        imageUrls,
+      });
     } catch (error) {
       console.error("Error saving images:", error.response ? error.response.data : error.message);
       setError(error.response?.data.detail || "Failed to save images.");
     }
   };
+
 
   return (
     <div className="generation_page">
@@ -177,8 +174,8 @@ const Generator = ({ addPrediction }) => {
               )}
             </div>
             <button type="submit" className="image_generate_btn">Generate image</button>
-            {/* <p>Status: {prediction.status}</p>
-            {error && <p>Error: {error}</p>} */}
+            <p>Status: {prediction.status}</p>
+            {error && <p>Error: {error}</p>}
             <a href="" className="go_pro_text">
               <p>You're low on credits!</p>
               <p><b>Go pro</b> to keep generating images</p>
@@ -282,8 +279,6 @@ const Generator = ({ addPrediction }) => {
                 defaultValue="39287"
               />
             </div>
-            <p>Status: {prediction.status}</p>
-            {error && <p>Error: {error}</p>}
           </div>
         </div>
       </form>
