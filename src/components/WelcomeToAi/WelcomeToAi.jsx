@@ -16,7 +16,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { motion } from 'framer-motion';
 import useAnimateOnView from "../animations/motions"
 
-const WelcomeToAi = () => {
+const WelcomeToAi = ({title, spanhead, highlighted, aboutContent, AboutList1,AboutList2,AboutList3}) => {
 
   const variants = {
     hidden: { opacity: 0, y: 50 },
@@ -56,9 +56,9 @@ const WelcomeToAi = () => {
             transition={{ duration: 0.85 }}>
 
             <Headings
-              title="Create Anything With "
-              spanhead="Welcome To Ai"
-              highlighted="AI image Generator"
+              title={title}
+              spanhead={spanhead}
+              highlighted={highlighted}
               />
               </motion.div>
             <motion.p ref={ref2}
@@ -66,9 +66,8 @@ const WelcomeToAi = () => {
             animate={inView2 ? 'visible' : 'hidden'}
             variants={variants}
             transition={{ duration: 0.85 }}>
-              We denounce with righteous indignation and dislike men who are
-              beguiled and demoralized by the charms of pleasure of the moment
-              blinded desire that they cannot foresee and trouble
+              {aboutContent}
+              
             </motion.p>
             <motion.div ref={ref3}
             initial="hidden"
@@ -77,15 +76,15 @@ const WelcomeToAi = () => {
             transition={{ duration: 0.85 }} className="lists_checks">
               <div className="list_item_check">
                 <IoIosCheckmarkCircle className="blue" />
-                <p>Save time Rapid AI-driven generation.</p>
+                <p>{AboutList1}</p>
               </div>
               <div className="list_item_check">
                 <IoIosCheckmarkCircle className="blue" />
-                <p>No Outdates Continuous code documentation refresh.</p>
+                <p>{AboutList2}</p>
               </div>
               <div className="list_item_check">
                 <IoIosCheckmarkCircle className="blue" />
-                <p>Consistency Consistent code documentation</p>
+                <p>{AboutList3}</p>
               </div>
             </motion.div>
             <div>
@@ -95,7 +94,7 @@ const WelcomeToAi = () => {
             initial="hidden"
             animate={inView4 ? 'visible' : 'hidden'}
             variants={variants}
-            transition={{ duration: 0.85 }} className="menu_btn">
+            transition={{ duration: 0.85 }} className="menu_btn" href="/Generate">
             Generate AI Image
                             <FaArrowRight/>
                         </motion.a>

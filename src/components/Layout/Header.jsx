@@ -54,7 +54,7 @@ const Header = () => {
                         <input type="text" placeholder="Generate Creative image"  />
                         </div>
                     </div> */}
-                        <a className="menu_btn">Generate
+                        <a className="menu_btn" href='/Generate'>Generate
                             <FaArrowRight/>
                         </a>
                     {/* <div className="prompt_box">

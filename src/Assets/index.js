@@ -12,6 +12,10 @@ import img11 from "./prompthero-prompt-3e95656a0e3.webp"
 import img12 from "./prompthero-prompt-1088dafdaee.webp"
 import img13 from "./prompthero-prompt-f2756c4febc.webp"
 import proimg from "./NorthmoorAI-74ef6aa6dcd.webp"
+import img14 from "./out-0 (1).png"
+import img16 from "./out-0 (2).png"
+import img15 from "./out-0 (3).png"
+import img17 from "./out-1.png"
 
 
 
@@ -45,6 +49,10 @@ export{
     img11,
     img12,
     img13,
+    img14,
+    img15,
+    img16,
+    img17,
     demoimg1,
     demoimg2,
     demoimg3,

@@ -34,8 +34,8 @@ const WhatProvide = () => {
             variants={variants}
             transition={{ duration: 0.85 }} className="list_box">
                   <div className="list_box_content">
-                    <h3>Open Photo Editor</h3>
-                    <p>Use the online picture editor for quick and easy photo enhancement such as adding text to photos. </p>
+                    <h3>Best NSFW Image Generator</h3>
+                    <p>We offer the most advanced NSFW image generator on the market, producing high-quality and realistic images that cater to a wide range of preferences.</p>
                   </div>
                 </motion.div>
                 <motion.div ref={ref2}
@@ -44,8 +44,8 @@ const WhatProvide = () => {
             variants={variants}
             transition={{ duration: 0.85 }} className="list_box">
                   <div className="list_box_content">
-                    <h3>Create Videos From Photos</h3>
-                    <p>MunAi’s photo video maker allows you to edit your videos effortlessly and seamlessly </p>
+                    <h3>Tag-Based Prompts</h3>
+                    <p>Users can easily generate images by using tags as prompts, allowing for precise control over the content and style of the images.</p>
                   </div>
                 </motion.div>
                 <motion.div ref={ref3}
@@ -54,8 +54,8 @@ const WhatProvide = () => {
             variants={variants}
             transition={{ duration: 0.85 }} className="list_box">
                   <div className="list_box_content">
-                    <h3>Customize image</h3>
-                    <p> Photo Editor lets you apply photo effects, edit photos and create photo collages with collage maker </p>
+                    <h3>Save Images</h3>
+                    <p> Once you've created your desired image, you can save it directly to your device.</p>
                   </div>
                 </motion.div>
               </div>

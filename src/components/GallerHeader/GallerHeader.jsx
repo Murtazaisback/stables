@@ -1,23 +1,28 @@
 import React from 'react'
 
-const GallerHeader = () => {
+const GallerHeader = ({background, backgroundPosition, showHeaderCover, postImgInfo, title, info  }) => {
+  const headerStyle = {
+    height: '80vh',
+    background: `url(${background})`,
+    backgroundPosition: backgroundPosition || 'center',
+  };
   return (
     <>
-    <div className='gallery_header'>
+    <div className='gallery_header' style={headerStyle}>
       <div className='gallery_header_content'>
 
-        <h2>BrandName</h2>
-        <p className='search_p'>The #1 website for NSFW image Generation. Search millions of AI images by tags like MOM, stepMom, huge boobs...</p>
+        <h2>{title}</h2>
+        <p className='search_p'>{info}</p>
+        {postImgInfo && 
+        
         <div className='post_img_info'>
-        <div className='Search_box'>
-            <input type="text" placeholder='Search NSFW images' />
-            <button type="submit" className=''>Search</button>
-        </div>
+        <a href="/Generate" className='blue_btn'>Generate image</a>
         
 
         </div>
+        }
       </div>
-        <div className='header_cover'></div>
+      {showHeaderCover && <div className='header_cover'></div>}
     </div>
 
         </>
