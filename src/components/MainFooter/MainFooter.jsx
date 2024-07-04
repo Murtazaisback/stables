@@ -27,7 +27,7 @@ const MainFooter = () => {
           <div className="ul_menu">
             <a href="/About">About Company</a>
             <a href="/Contact">Contact Us</a>
-            <a href="/pricing">Pricing</a>
+            {/* <a href="/pricing">Pricing</a> */}
             <UserButton/>
           </div>
           <div className="copy_right">Copyright @2023, MunAi All Rights Reserved</div>

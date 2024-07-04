@@ -86,7 +86,7 @@ const Pricingblock = () => {
             </div>
             <div className="plan_ctr">
               <div className="plan_price green">$19.99</div>
-              <div className="plan_btn blue_btn" onClick={handleUpgrade}>Get Started <FaArrowRight/></div>
+              <div className="plan_btn blue_btn" onClick={handleUpgrade} disabled>Get Started <FaArrowRight/></div>
             </div>
               
             </div>
