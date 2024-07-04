@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaImages } from "react-icons/fa";
+import { FaImages } from "react-icons/fa6";
 
 const Generator = ({ addPrediction }) => {
   const [selectedTags, setSelectedTags] = useState([]);
-  const [defaultTags] = useState(["naked nsfw"]);
+  const [defaultTags, setDefaultTags] = useState(["neked", "nsfw"]);
+  const [typeOfImage, setTypeOfImage] = useState("Women: Photography");
   const [prediction, setPrediction] = useState({ status: null, output: [] });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +13,7 @@ const Generator = ({ addPrediction }) => {
   const [height, setHeight] = useState("512");
   const [numOutputs, setNumOutputs] = useState(1);
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [seed, setSeed] = useState(null);
   let intervalId;
 
   const categories = {
@@ -41,6 +43,10 @@ const Generator = ({ addPrediction }) => {
     );
   };
 
+  const handleTypeOfImageChange = (e) => {
+    setTypeOfImage(e.target.value);
+  };
+
   const toggleCategory = (category) => {
     setExpandedCategory((prevCategory) => (prevCategory === category ? null : category));
   };
@@ -48,25 +54,27 @@ const Generator = ({ addPrediction }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
 
-    const { seed,  } = e.target.elements;
-    const promptTags = [...defaultTags, ...selectedTags].join(", ");
+    const { seed } = e.target.elements;
+
+    // Filter out invalid tags and join into a single string
+    const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
+    const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("https://stable-e-axz2.onrender.com/api/predictions", {
-        prompt: promptTags,
+      const response = await axios.post("http://localhost:5000/api/predictions", {
+        prompt: prompt,
         seed: parseInt(seed.value),
         width: parseInt(width),
         height: parseInt(height),
         num_outputs: parseInt(numOutputs),
       });
 
-      console.log("API Response:", response.data);
+      console.log("Prediction Response:", response.data);
+
       setPrediction(response.data);
       intervalId = setInterval(() => pollPrediction(response.data.id), 2000);
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
     }
@@ -74,38 +82,54 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`https://stable-e-axz2.onrender.com/api/predictions/${id}`);
+      const response = await axios.get(`http://localhost:5000/api/predictions/${id}`);
+      console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
       if (response.data.status === "succeeded" || response.data.status === "failed") {
         clearInterval(intervalId);
         setIsLoading(false);
+
         if (response.data.status === "succeeded") {
           await sendGeneratedImages(response.data.output);
+        } else if (response.data.status === "failed") {
+          setError("Image generation failed. Please try again.");
+          console.error("Generation failed. API response:", response.data);
         }
       }
     } catch (error) {
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
+      console.error("Polling failed. Error:", error);
     }
   };
-
   const sendGeneratedImages = async (imageUrls) => {
     try {
       const { seed } = document.forms[0];
-      await axios.post("https://stable-e-axz2.onrender.com/api/predictions/save-images", {
-        prompt: [...defaultTags, ...selectedTags].join(", "),
-        seed: parseInt(seed.value),
-        width: parseInt(width),
-        height: parseInt(height),
-        imageUrls,
-      });
+
+      const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
+      const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
+
+      if (typeof imageUrls === "string") {
+        imageUrls = [imageUrls];
+      }
+
+      for (const url of imageUrls) {
+        await axios.post("http://localhost:5000/api/predictions/save-images", {
+          prompt: prompt,
+          seed: parseInt(seed.value),
+          width: parseInt(width),
+          height: parseInt(height),
+          imageUrls: [url],
+        });
+      }
     } catch (error) {
       console.error("Error saving images:", error.response ? error.response.data : error.message);
       setError(error.response?.data.detail || "Failed to save images.");
     }
   };
 
+  
 
   return (
     <div className="generation_page">
@@ -113,9 +137,10 @@ const Generator = ({ addPrediction }) => {
         <div className="generation_page_warp">
           <div className="generation_tags">
             <div className="generation_inp">
-              <label htmlFor="model">SELECT A MODEL</label>
-              <select name="model" id="model" onChange={(e) => handleTagSelect(e.target.value)}>
+              <label htmlFor="typeOfImage">SELECT A Generation type</label>
+              <select name="typeOfImage" id="typeOfImage" onChange={handleTypeOfImageChange}>
                 <option value="Women: Photography" selected>Women: Photography</option>
+                {/* <option value="Women: Photography" selected>Women: Photography</option> */}
                 <option value="Women: Detailed">Women: Detailed</option>
                 <option value="Women: Realistic">Women: Realistic</option>
                 <option value="Women: Legacy">Women: Legacy</option>
@@ -129,19 +154,15 @@ const Generator = ({ addPrediction }) => {
                 <option value="Blowjob">Blowjob</option>
                 <option value="Missionary">Missionary</option>
                 <option value="Titfuck">Titfuck</option>
+                {/* Add more options here if needed */}
               </select>
             </div>
             <div className="selected_tags">
               <h4>Selected Tags</h4>
               <div className="tags_container">
                 {selectedTags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="tag selected"
-                    onClick={() => handleTagSelect(tag)}
-                  >
+                  <span key={tag} className="tag selected" onClick={() => handleTagSelect(tag)}>
                     {tag}
-                    <div className="remove_tag">X</div>
                   </span>
                 ))}
               </div>
@@ -189,17 +210,20 @@ const Generator = ({ addPrediction }) => {
                 <p>Status: {prediction.status}</p>
                 {error && <p>Error: {error}</p>}
               </div>
-            ) : prediction.output && prediction.output.length > 0 ? (
-              prediction.output.map((img, index) => (
-                <div className="main_rendered_img" key={index}>
-                  <img
-                    src={img}
-                    alt={`Generated ${index}`}
-                    width={width}
-                    height={height}
-                  />
-                </div>
-              ))
+            ) : prediction.status === "succeeded" && prediction.output.length > 0 ? (
+              <div className="generated_images">
+                {Array.isArray(prediction.output)
+                  ? prediction.output.map((imageUrl, index) => (
+                      <div className="generated_image" key={index}>
+                        <img src={imageUrl} alt={`Generated ${index}`} />
+                      </div>
+                    ))
+                  : (
+                      <div className="generated_image">
+                        <img src={prediction.output} alt="Generated" />
+                      </div>
+                    )}
+              </div>
             ) : (
               <React.Fragment>
                 <FaImages size={100} className="placeholder_icon" />
@@ -216,6 +240,7 @@ const Generator = ({ addPrediction }) => {
                 id="width"
                 onChange={(e) => setWidth(e.target.value)}
                 defaultValue="512"
+                value={width}
               >
                 <option value="128">128</option>
                 <option value="256">256</option>
@@ -237,6 +262,7 @@ const Generator = ({ addPrediction }) => {
                 id="height"
                 onChange={(e) => setHeight(e.target.value)}
                 defaultValue="512"
+                value={height}
               >
                 <option value="128">128</option>
                 <option value="256">256</option>
@@ -251,7 +277,7 @@ const Generator = ({ addPrediction }) => {
                 <option value="1024">1024</option>
               </select>
             </div>
-            <div className="generation_inp">
+            {/* <div className="generation_inp">
               <label htmlFor="num_outputs">Number of Outputs</label>
               <input
                 type="number"
@@ -264,7 +290,7 @@ const Generator = ({ addPrediction }) => {
                 onChange={(e) => setNumOutputs(parseInt(e.target.value))}
                 defaultValue="1"
               />
-            </div>
+            </div> */}
             <div className="generation_inp">
               <label htmlFor="seed">Seed</label>
               <p className="propt_warn">
@@ -276,7 +302,10 @@ const Generator = ({ addPrediction }) => {
                 placeholder="Seed"
                 className="input_main"
                 name="seed"
+                value={seed}
                 defaultValue="39287"
+                onChange={(e) => setSeed(parseInt(e.target.value))}
+
               />
             </div>
           </div>
