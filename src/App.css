@@ -1696,7 +1696,12 @@ button:disabled {
   display: none;
 }
 
-
+.generated_images{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
 
 
 

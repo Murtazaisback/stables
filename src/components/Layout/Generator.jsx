@@ -166,8 +166,14 @@ const Generator = ({ addPrediction }) => {
       setError(error.response?.data.detail || "Failed to save images.");
     }
   };
-
-  
+  const handleDownload = (imageUrl) => {
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = 'generated_image.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="generation_page">
@@ -242,32 +248,39 @@ const Generator = ({ addPrediction }) => {
           </div>
 
           <div className="generated_area">
-            {isLoading ? (
-              <div className="loader_warp">
-                <div className="loader"></div>
-                <p>Status: {prediction.status}</p>
-                {error && <p>Error: {error}</p>}
-              </div>
-            ) : prediction.status === "succeeded" && prediction.output.length > 0 ? (
-              <div className="generated_images">
-                {Array.isArray(prediction.output)
-                  ? prediction.output.map((imageUrl, index) => (
-                      <div className="generated_image" key={index}>
-                        <img src={imageUrl} alt={`Generated ${index}`} />
-                      </div>
-                    ))
-                  : (
-                      <div className="generated_image">
-                        <img src={prediction.output} alt="Generated" />
-                      </div>
-                    )}
-              </div>
-            ) : (
-              <React.Fragment>
-                <FaImages size={100} className="placeholder_icon" />
-                <p>Your generated images will appear here... Try generating one!</p>
-              </React.Fragment>
-            )}
+          {isLoading ? (
+        <div className="loader_warp">
+          <div className="loader"></div>
+          <p>Status: {prediction.status}</p>
+          {error && <p>Error: {error}</p>}
+        </div>
+      ) : (
+        <>
+          {prediction.status === "succeeded" && prediction.output.length > 0 ? (
+            <div className="generated_images">
+              {Array.isArray(prediction.output)
+                ? prediction.output.map((imageUrl, index) => (
+                    <div className="generated_image" key={index}>
+                      <img src={imageUrl} alt={`Generated ${index}`} />
+                    </div>
+                  ))
+                : (
+                    <div className="generated_image">
+                      <img src={prediction.output} alt="Generated" />
+                    </div>
+                  )}
+              {/* <a onClick={() => handleDownload(prediction.output)} className="menu_btn" download target="_blank">
+                Download image
+              </a> */}
+            </div>
+          ) : (
+            <React.Fragment>
+              <FaImages size={100} className="placeholder_icon" />
+              <p>Your generated images will appear here... Try generating one!</p>
+            </React.Fragment>
+          )}
+        </>
+      )}
           </div>
 
           <div className="generated_details">
@@ -346,6 +359,10 @@ const Generator = ({ addPrediction }) => {
 
               />
             </div>
+            {/* <button onClick={() => handleDownload(imageUrl)}>Download image</button> */}
+            {/* {prediction.output && (
+            <button onClick={handleDownload}>Download image</button>
+          )} */}
           </div>
         </div>
       </form>
