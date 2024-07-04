@@ -62,7 +62,7 @@ const Generator = ({ addPrediction }) => {
     const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("http://localhost:5000/api/predictions", {
+      const response = await axios.post("https://stable-e-axz2.onrender.com/api/predictions", {
         prompt: prompt,
         seed: parseInt(seed.value),
         width: parseInt(width),
@@ -82,7 +82,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/predictions/${id}`);
+      const response = await axios.get(`https://stable-e-axz2.onrender.com/api/predictions/${id}`);
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -115,7 +115,7 @@ const Generator = ({ addPrediction }) => {
       }
 
       for (const url of imageUrls) {
-        await axios.post("http://localhost:5000/api/predictions/save-images", {
+        await axios.post("https://stable-e-axz2.onrender.com/api/predictions/save-images", {
           prompt: prompt,
           seed: parseInt(seed.value),
           width: parseInt(width),
