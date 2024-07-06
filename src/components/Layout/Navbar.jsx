@@ -32,7 +32,7 @@ const Navbar = () => {
               <li><a href="/Generate" className={isActive('/Generate')}>Generate</a></li>
               <li><a href="/About" className={isActive('/About')}>About us</a></li>
               <li><a href="/Contact" className={isActive('/Contact')}>Contact us</a></li>
-              {/* <li><a href="/Pricing" className={isActive('/Pricing')}>Pricing</a></li> */}
+              <li><a href="/Pricing" className={isActive('/Pricing')}>Pricing</a></li>
             </ul>
           </div>
           <div className='nav_right'>

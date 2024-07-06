@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaImages } from "react-icons/fa6";
+import { useUser } from '@clerk/clerk-react';
 
 const Generator = ({ addPrediction }) => {
+  const { user } = useUser();
   const [selectedTags, setSelectedTags] = useState([]);
   const [defaultTags, setDefaultTags] = useState(["neked", "nsfw"]);
   const [typeOfImage, setTypeOfImage] = useState("Women: Photography");
@@ -14,7 +16,26 @@ const Generator = ({ addPrediction }) => {
   const [numOutputs, setNumOutputs] = useState(1);
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [seed, setSeed] = useState(null);
+  const [imageGenerationCount, setImageGenerationCount] = useState(0);
+  const [isProUser, setIsProUser] = useState(false);
   let intervalId;
+
+  useEffect(() => {
+    // Fetch user subscription status and image generation count
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/users/${user.id}`);
+        setIsProUser(response.data.isProUser);
+        setImageGenerationCount(response.data.imageGenerationCount);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
 
   const categories = {
     "Base": ["model", "miss universe model", "milf", "celebrity", "bodybulider", "cyborg", "bimbo", "bollywood diva"],
@@ -93,6 +114,13 @@ const Generator = ({ addPrediction }) => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Check if the user can generate more images
+    if (!isProUser && imageGenerationCount >= 10) {
+      setError("You have reached the limit of 10 image generations. Please upgrade to pro for unlimited access.");
+      setIsLoading(false);
+      return;
+    }
+
     const { seed } = e.target.elements;
 
     // Filter out invalid tags and join into a single string
@@ -100,18 +128,22 @@ const Generator = ({ addPrediction }) => {
     const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("https://stable-e-axz2.onrender.com/api/predictions", {
+      const response = await axios.post("http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions", {
         prompt: prompt,
         seed: parseInt(seed.value),
         width: parseInt(width),
         height: parseInt(height),
         num_outputs: parseInt(numOutputs),
+        userId: user.id,
       });
 
       console.log("Prediction Response:", response.data);
 
       setPrediction(response.data);
       intervalId = setInterval(() => pollPrediction(response.data.id), 2000);
+
+      // Update the image generation count
+      setImageGenerationCount(prevCount => prevCount + 1);
     } catch (error) {
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
@@ -120,7 +152,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`https://stable-e-axz2.onrender.com/api/predictions/${id}`);
+      const response = await axios.get(`http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions/${id}`);
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -141,6 +173,7 @@ const Generator = ({ addPrediction }) => {
       console.error("Polling failed. Error:", error);
     }
   };
+
   const sendGeneratedImages = async (imageUrls) => {
     try {
       const { seed } = document.forms[0];
@@ -153,12 +186,13 @@ const Generator = ({ addPrediction }) => {
       }
 
       for (const url of imageUrls) {
-        await axios.post("https://stable-e-axz2.onrender.com/api/predictions/save-images", {
+        await axios.post("http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions/save-images", {
           prompt: prompt,
           seed: parseInt(seed.value),
           width: parseInt(width),
           height: parseInt(height),
           imageUrls: [url],
+          userId: user.id,
         });
       }
     } catch (error) {
@@ -166,6 +200,7 @@ const Generator = ({ addPrediction }) => {
       setError(error.response?.data.detail || "Failed to save images.");
     }
   };
+
   const handleDownload = (imageUrl) => {
     const link = document.createElement('a');
     link.href = imageUrl;
@@ -174,6 +209,7 @@ const Generator = ({ addPrediction }) => {
     link.click();
     document.body.removeChild(link);
   };
+
 
   return (
     <div className="generation_page">
