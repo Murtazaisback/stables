@@ -40,7 +40,62 @@ const Generator = ({ addPrediction }) => {
   }, [user]);
 
   const categories = {
-    // your categories object
+    "Base": ["model", "miss universe model", "milf", "celebrity", "bodybulider", "cyborg", "bimbo", "bollywood diva"],
+    "Number of people": ["one", "two", "several"],
+    "Body": ["big boobs", "busty", "perfect boobs", "small boobs", "abs", "big ass", "glasses", "tattos", "perfect body"],
+    "Age": ["18", "20s", "30s", "40s","50s", "60s", "70s", "80s"],
+    "Face": ["smiling", "serious", "laughing","happy", "sad", "angry", "shocked", "ahegao", "orgasm"],
+    "Hair Color": ["blonde", "brunette", "redhead", "white hair", "black hair", "green hair","purple hair", "pink hair", "ginger"],
+    "Hair Style": ["short", "long", "curly", "straight"],
+    "Ethnicity": [
+    "asian", "caucasian", "african", "hispanic",
+     "arabic",  "black", "brazilian", "british", "chinese", "czech", 
+    "dutch", "egyptian", "ethiopian", "filipina", "french", "german", "greek", "hungarian",
+    "indian", "indonesian", "irish", "italian", "japanese", "jewish", "korean", "latina", 
+    "malaysian", "middle eastern", "mongolian", "native american", "nigerian", "nilotic",
+    "persian", "polynesian", "portuguese", "russian", "scandinavian", "spanish", "swedish",
+    "thai", "turkish", "vietnamese", "white"
+],
+    "Style": [
+    "casual", "formal", "sporty",
+    "mirror selfie", "painting", "black and white", "vintage", "film photo", "soft anime",
+    "crisp anime", "soft + warm", "illustration", "dark fantasy", "warm anime", "cyberpunk",
+    "skin detail", "charcoal", "3d", "watercolor", "comic"
+],
+    "Setting": [
+    "indoor", "outdoor", "studio",
+    "bar", "bathroom", "beach", "bedroom", "bus", "cafe", "car", "casino", "cave",
+    "changing room", "church", "club", "couch", "desert", "forest", "grocery", "gym",
+    "hospital", "hot tub", "jungle", "kitchen", "lake", "locker room", "mall", "meadow",
+    "moon", "mountains", "oasis", "office", "onsen", "party", "pool", "prison",
+    "restaurant", "sauna", "shower", "snow", "stage", "street", "strip club", "tent",
+    "train", "underwater", "wedding", "yacht"
+],
+    "View": ["close-up", "front view", "side view"],
+    "Action": ["standing", "sitting", "walking", "yoga", "sleeping", "squatting", "cooking", "eating", "jumping", "working out", "t-pose", "bathing", "gaming", "plank", "massage", "bending over", "spreading legs", "cumshot", "on back", "straddling"],
+
+    "Clothing": [
+    "dress", "suit", "casual wear",
+    "nude", "60s", "70s", "80s", "90s", "angel", "apron", "basketball", "bathrobe", "bdsm",
+    "beach volleyball", "bikini", "blouse", "bodypaint", "bomber", "boots", "bow tie", "bra", "casual",
+    "cheerleader", "chemise", "choker", "clown", "construction worker", "corset", "cosplay", "crop top",
+    "daisy dukes", "devil", "dirndl", "doctor", "dominatrix", "dress", "face mask", "fantasy armor",
+    "firefighter", "fishnet", "flight attendant", "fur", "geisha", "gloves", "golf", "goth", "halloween",
+    "harem pants", "harlequin", "hat", "high heels", "high socks", "hijab", "hip hop", "jacket", "jeans",
+    "jumpsuit", "kilt", "kimono", "lab coat", "latex", "leather", "lingerie", "long skirt", "lumberjack", "maid",
+    "martial arts", "mech suit", "medieval", "mesh", "micro skirt", "microkini", "military", "mini skirt",
+    "nightgown", "ninja", "niqab", "nun", "nurse", "one piece swimsuit", "onesie", "pajamas", "panties",
+    "pantyhose", "parka", "pilot", "pirate", "police", "polo", "professor", "push-up bra", "race driver",
+    "roman", "sailor", "salwar", "santa", "sari", "satin", "scarf", "sci-fi armor", "secretary", "shirt",
+    "short shorts", "soccer", "space suit", "spandex", "sports", "sports bra", "steampunk", "stockings",
+    "stylish", "suit", "sundress", "superhero", "suspender belt", "sweater", "tailcoat", "tank top", "teacher",
+    "tennis", "tie", "tracksuit", "tuxedo", "underwear", "vest", "wedding dress", "witch"
+],
+    "Clothing Modifiers": ["ripped", "designer", "vintage"],
+    "Accessories/Objects": ["hat", "glasses", "jewelry", "diamond jewelry", "gold jewelry", "pearl jewelry"],
+    "Modifiers/Effects": ["black and white", "sepia", "HDR"],
+    "Advanced Style": ["avant-garde", "bohemian", "gothic"],
+    "Character (beta)": ["heroic", "villainous", "neutral"],
   };
 
   const handleTagSelect = (tag) => {
@@ -157,49 +212,38 @@ const Generator = ({ addPrediction }) => {
     }
   };
 
-  
-
-  
   const handleDownload = async (event, url, filename) => {
     event.stopPropagation();
-  
-    // Create a canvas element
+
     const img = new Image();
-    img.crossOrigin = "Anonymous"; // Needed to avoid CORS issues when drawing the image on the canvas
+    img.crossOrigin = "Anonymous";
     img.src = url;
-  
+
     img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-  
-      // Set canvas dimensions to the image dimensions
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
       canvas.width = img.width;
       canvas.height = img.height;
-  
-      // Draw the image onto the canvas
+
       ctx.drawImage(img, 0, 0);
-  
-      // Add watermark text with background
-      const watermarkText = 'forbiddenpixels.com';
-      ctx.font = '19px Arial';
+
+      const watermarkText = "forbiddenpixels.com";
+      ctx.font = "19px Arial";
       const textWidth = ctx.measureText(watermarkText).width;
       const padding = 10;
-  
-      // Draw background rectangle
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Black with transparency
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fillRect(canvas.width - textWidth - padding * 2, 10, textWidth + padding * 2, 30);
-  
-      // Draw watermark text
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // White with transparency
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "top";
       ctx.fillText(watermarkText, canvas.width - 10, 10 + padding / 2);
-  
-      // Convert the canvas to a data URL
-      const dataUrl = canvas.toDataURL('image/png');
-  
-      // Trigger download
-      const link = document.createElement('a');
+
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const link = document.createElement("a");
       link.href = dataUrl;
       link.download = filename;
       document.body.appendChild(link);
