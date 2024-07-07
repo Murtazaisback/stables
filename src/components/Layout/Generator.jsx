@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaImages } from "react-icons/fa6";
-import { useUser } from '@clerk/clerk-react';
+import { useClerk, useUser } from '@clerk/clerk-react';
 
 const Generator = ({ addPrediction }) => {
-  const { user } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
+  const { openSignIn, session } = useClerk();
   const [selectedTags, setSelectedTags] = useState([]);
   const [defaultTags, setDefaultTags] = useState(["neked", "nsfw"]);
   const [typeOfImage, setTypeOfImage] = useState("Women: Photography");
@@ -20,17 +21,19 @@ const Generator = ({ addPrediction }) => {
   const [isProUser, setIsProUser] = useState(false);
   let intervalId;
 
+
   useEffect(() => {
     // Fetch user subscription status and image generation count
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/users/${user.id}`);
-        setIsProUser(response.data.isProUser);
+        const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`);
+        setIsProUser(response.data.subscribed);
         setImageGenerationCount(response.data.imageGenerationCount);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
+    
 
     if (user) {
       fetchUserData();
@@ -125,10 +128,10 @@ const Generator = ({ addPrediction }) => {
 
     // Filter out invalid tags and join into a single string
     const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
-    const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
+    const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions", {
+      const response = await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions", {
         prompt: prompt,
         seed: parseInt(seed.value),
         width: parseInt(width),
@@ -152,7 +155,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions/${id}`);
+      const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/${id}`);
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -179,14 +182,14 @@ const Generator = ({ addPrediction }) => {
       const { seed } = document.forms[0];
 
       const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
-      const prompt = `${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
+      const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
       if (typeof imageUrls === "string") {
         imageUrls = [imageUrls];
       }
 
       for (const url of imageUrls) {
-        await axios.post("http://aiimagegeneration-env.eba-s4qp5upi.us-east-1.elasticbeanstalk.com/api/predictions/save-images", {
+        await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/save-images", {
           prompt: prompt,
           seed: parseInt(seed.value),
           width: parseInt(width),
@@ -201,14 +204,57 @@ const Generator = ({ addPrediction }) => {
     }
   };
 
-  const handleDownload = (imageUrl) => {
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = 'generated_image.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  
+
+  
+  const handleDownload = async (event, url, filename) => {
+    event.stopPropagation();
+  
+    // Create a canvas element
+    const img = new Image();
+    img.crossOrigin = "Anonymous"; // Needed to avoid CORS issues when drawing the image on the canvas
+    img.src = url;
+  
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+  
+      // Set canvas dimensions to the image dimensions
+      canvas.width = img.width;
+      canvas.height = img.height;
+  
+      // Draw the image onto the canvas
+      ctx.drawImage(img, 0, 0);
+  
+      // Add watermark text with background
+      const watermarkText = 'forbiddenpixels.com';
+      ctx.font = '19px Arial';
+      const textWidth = ctx.measureText(watermarkText).width;
+      const padding = 10;
+  
+      // Draw background rectangle
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Black with transparency
+      ctx.fillRect(canvas.width - textWidth - padding * 2, 10, textWidth + padding * 2, 30);
+  
+      // Draw watermark text
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // White with transparency
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText(watermarkText, canvas.width - 10, 10 + padding / 2);
+  
+      // Convert the canvas to a data URL
+      const dataUrl = canvas.toDataURL('image/png');
+  
+      // Trigger download
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
   };
+
 
 
   return (
@@ -220,7 +266,6 @@ const Generator = ({ addPrediction }) => {
               <label htmlFor="typeOfImage">SELECT A Generation type</label>
               <select name="typeOfImage" id="typeOfImage" onChange={handleTypeOfImageChange}>
                 <option value="Women: Photography" selected>Women: Photography</option>
-                {/* <option value="Women: Photography" selected>Women: Photography</option> */}
                 <option value="Women: Detailed">Women: Detailed</option>
                 <option value="Women: Realistic">Women: Realistic</option>
                 <option value="Women: Legacy">Women: Legacy</option>
@@ -274,7 +319,8 @@ const Generator = ({ addPrediction }) => {
                 </div>
               )}
             </div>
-            <button type="submit" className="image_generate_btn">Generate image</button>
+            <button type="submit" className="image_generate_btn"  disabled={isLoading}>{isLoading ? "Generating" : "Generate image"}</button>
+           
             <p>Status: {prediction.status}</p>
             {error && <p>Error: {error}</p>}
             <a href="" className="go_pro_text">
@@ -284,40 +330,53 @@ const Generator = ({ addPrediction }) => {
           </div>
 
           <div className="generated_area">
-          {isLoading ? (
-        <div className="loader_warp">
-          <div className="loader"></div>
-          <p>Status: {prediction.status}</p>
-          {error && <p>Error: {error}</p>}
+  {isLoading ? (
+    <div className="loader_warp">
+      <div className="loader"></div>
+      <p>Status: {prediction.status}</p>
+      {error && <p>Error: {error}</p>}
+    </div>
+  ) : (
+    <>
+      {prediction.status === "succeeded" && prediction.output.length > 0 ? (
+        <div className="generated_images">
+          {Array.isArray(prediction.output)
+            ? prediction.output.map((imageUrl, index) => (
+                <div className="generated_image" key={index}>
+                  <img src={imageUrl} alt={`Generated ${index}`} />
+                  <div className="watermark">forbiddenpixels.com</div>
+                  {/* <a onClick={(e) => handleDownload(e, imageUrl, `Generated_${index}.png`)} className="menu_btn" target="_blank">Download</a> */}
+                  <div
+                    className="menu_btn"
+                    onClick={(e) => handleDownload(e, prediction.output, "Generated.png")}
+                  >
+                    Download
+                  </div>
+                </div>
+              ))
+            : (
+                <div className="generated_image">
+                  <img src={prediction.output} alt="Generated" />
+                  <div className="watermark">forbiddenpixels.com</div>
+                  {/* <a onClick={(e) => handleDownload(e, prediction.output, "Generated.png")} className="menu_btn" target="_blank">Download</a> */}
+                  <div
+                    className="menu_btn"
+                    onClick={(e) => handleDownload(e, prediction.output, "Generated.png")}
+                  >
+                    Download
+                  </div>
+                </div>
+              )}
         </div>
       ) : (
-        <>
-          {prediction.status === "succeeded" && prediction.output.length > 0 ? (
-            <div className="generated_images">
-              {Array.isArray(prediction.output)
-                ? prediction.output.map((imageUrl, index) => (
-                    <div className="generated_image" key={index}>
-                      <img src={imageUrl} alt={`Generated ${index}`} />
-                    </div>
-                  ))
-                : (
-                    <div className="generated_image">
-                      <img src={prediction.output} alt="Generated" />
-                    </div>
-                  )}
-              {/* <a onClick={() => handleDownload(prediction.output)} className="menu_btn" download target="_blank">
-                Download image
-              </a> */}
-            </div>
-          ) : (
-            <React.Fragment>
-              <FaImages size={100} className="placeholder_icon" />
-              <p>Your generated images will appear here... Try generating one!</p>
-            </React.Fragment>
-          )}
-        </>
+        <React.Fragment>
+          <FaImages size={100} className="placeholder_icon" />
+          <p>Your generated images will appear here... Try generating one!</p>
+        </React.Fragment>
       )}
-          </div>
+    </>
+  )}
+</div>
 
           <div className="generated_details">
             <div className="generation_inp">

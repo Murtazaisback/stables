@@ -1212,6 +1212,9 @@ button:disabled {
   gap: 20px;
   /* overflow-y: scroll; */
   padding-top: 40px;
+  background: white;
+  box-shadow: 10px 0px 5px 0px rgba(9, 152, 255, 0.02);
+
 }
 .generation_tags::-webkit-scrollbar {
   width: 5px; /* Width of the scrollbar */
@@ -1365,6 +1368,10 @@ button:disabled {
   /* height: 86vh; */
   overflow-y: scroll !important;
   padding-top: 40px;
+  background: white;
+  box-shadow: -10px 0px 5px 0px rgba(9, 152, 255, 0.02);
+
+  
 }
 .generated_details::-webkit-scrollbar {
   width: 0px; 
@@ -1605,21 +1612,24 @@ button:disabled {
 
 .tag {
   /* background-color: #ddd; */
-  border: 1px solid var(--accent-blue);
+  /* border: 1px solid var(--accent-blue); */
   text-transform: capitalize;
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  /* text-decoration: underline; */
+  background: var(--accent-blue);
+  color: white;
 
 }
 
 .tag.selected {
-  background: #4C3BCF;
+  background: green;
   color: white;
 }
 .selected:hover{
-  /* background-color: rgb(14 159 110); */
+  background-color: red;
   cursor:pointer;
 }
 .selected:hover .remove_tag{
@@ -1645,7 +1655,7 @@ button:disabled {
   margin-bottom: 5px;
 }
 .category_names{
-  gap: 5px;
+  gap: 10px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -1655,8 +1665,17 @@ button:disabled {
   font-size: 18px;
   padding: 5px;
   border-radius: 5px;
-  text-decoration: underline;
+  box-shadow: 10px 0px 5px 0px rgba(9, 152, 255, 0.03);
+
+  /* text-decoration: underline; */
+  font-weight: 400;
   cursor: pointer;
+  border: 1px solid var(--accent-blue);
+  transition: var(--all-transition);
+}
+.category_names h5:hover{
+  background: var(--background-blue);
+  /* color: white; */
 }
 
 
@@ -1711,8 +1730,25 @@ button:disabled {
 .generated_image img{
   max-width: 600px;
 }
-
-
+.generated_image{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  /* display: inline-block; */
+}
+.watermark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  font-size: 19px;
+  font-family: Arial, sans-serif;
+}
 
 
 

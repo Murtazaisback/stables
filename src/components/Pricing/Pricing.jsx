@@ -19,9 +19,9 @@ const Pricingblock = () => {
         if (!user || !isSignedIn) {
           return; // Exit if user is not signed in
         }
-
+    
         const response = await axios.get(`http://localhost:5000/api/user/${user.id}`);
-
+    
         setIsSubscribed(response.data.subscribed);
         setLoading(false);
       } catch (error) {
@@ -35,7 +35,6 @@ const Pricingblock = () => {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
-
     const productId = e.currentTarget.dataset.id;
 
     if (!user || !isSignedIn || !productId) {
@@ -47,20 +46,17 @@ const Pricingblock = () => {
       const response = await axios.post('http://localhost:5000/create-checkout-session', {
         userId: user.id,
         productId,
+        email: user.email // Include user email if needed
       });
 
       const sessionId = response.data.id;
-
       const stripe = await stripePromise;
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: sessionId,
-      });
+      const { error } = await stripe.redirectToCheckout({ sessionId });
 
       if (error) {
         console.error('Stripe error:', error);
       } else {
-        // Update local state if checkout was successful
-        setIsSubscribed(true);
+        setIsSubscribed(true); // Update local state on successful subscription
         console.log('Subscription successful!');
       }
     } catch (error) {
@@ -68,13 +64,8 @@ const Pricingblock = () => {
     }
   };
 
-  if (!isSignedIn) {
-    return <div>Please sign in to access pricing.</div>;
-  }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+
 
 
 
