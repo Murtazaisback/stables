@@ -15,6 +15,13 @@ import { FaArrowRight } from "react-icons/fa6";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { motion } from 'framer-motion';
 import useAnimateOnView from "../animations/motions"
+import WW10 from "../../Assets/prompthero-prompt-17dca190cc3.webp"
+import WW11 from "../../Assets/prompthero-prompt-3e95656a0e3.webp"
+import WW12 from "../../Assets/prompthero-prompt-1088dafdaee.webp"
+import hand2 from "../../Assets/Hand-12.png"
+import dd7 from "../../Assets/Group-9-13.png"
+import dd8 from "../../Assets/stable.png"
+
 
 const WelcomeToAi = ({title, spanhead, highlighted, aboutContent, AboutList1,AboutList2,AboutList3}) => {
 
@@ -34,19 +41,19 @@ const WelcomeToAi = ({title, spanhead, highlighted, aboutContent, AboutList1,Abo
         <div className="welcome_sec_warp">
           <div className="welcome_imges">
             <div className="welcome_img_row1">
-              <img src={img11} alt="" className="welcome_img_top" />
-              <img src={img12} alt="" className="welcome_img_bottom" />
+              <img src={WW11} alt="" className="welcome_img_top" />
+              <img src={WW12} alt="" className="welcome_img_bottom" />
             </div>
             <div className="welcome_img_row2">
-              <img src={img13} alt="" className="welcome_img_top_right" />
+              <img src={WW10} alt="" className="welcome_img_top_right" />
               {/* <img src={demoimg9} alt=""className='welcome_img_bottom_right'  /> */}
               <div className="welcome_img_bottom_right">
                 <p>Online AI Image Generator</p>
-                <img src={demoimg7} alt="" />
+                <img src={dd7} alt="" />
               </div>
             </div>
-            <img src={demoimg8} alt="" className="abs_img" />
-            <img src={hand} alt="" className="hand_img" />
+            <img src={dd8} alt="" className="abs_img" />
+            <img src={hand2} alt="" className="hand_img" />
           </div>
           <div className="welcome_content">
             <motion.div ref={ref1}

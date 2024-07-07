@@ -3,6 +3,7 @@ import Headings from "../roots/Headings";
 import { demoimg10, img9 } from "../../Assets";
 import { motion } from 'framer-motion';
 import useAnimateOnView from "../animations/motions"
+import WW9 from "../../Assets/prompthero-prompt-f572c9be3fa.webp"
 
 const WhatProvide = () => {
 
@@ -62,7 +63,7 @@ const WhatProvide = () => {
             </div>
             <div className="WhatProvide_img">
               <div className="WhatProvide_img_box">
-                <img src={img9} alt="" />
+                <img src={WW9} alt="" />
               </div>
             </div>
           </div>

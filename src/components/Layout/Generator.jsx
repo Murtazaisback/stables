@@ -7,7 +7,7 @@ const Generator = ({ addPrediction }) => {
   const { user, isSignedIn, isLoaded } = useUser();
   const { openSignIn, session } = useClerk();
   const [selectedTags, setSelectedTags] = useState([]);
-  const [defaultTags, setDefaultTags] = useState(["naked", "nsfw"]);
+  const [defaultTags, setDefaultTags] = useState(["neked", "nsfw"]);
   const [typeOfImage, setTypeOfImage] = useState("Women: Photography");
   const [prediction, setPrediction] = useState({ status: null, output: [] });
   const [error, setError] = useState(null);
@@ -21,18 +21,19 @@ const Generator = ({ addPrediction }) => {
   const [isProUser, setIsProUser] = useState(false);
   let intervalId;
 
+
   useEffect(() => {
+    // Fetch user subscription status and image generation count
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`
-        );
+        const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`);
         setIsProUser(response.data.subscribed);
         setImageGenerationCount(response.data.imageGenerationCount);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
+    
 
     if (user) {
       fetchUserData();
@@ -116,6 +117,7 @@ const Generator = ({ addPrediction }) => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Check if the user can generate more images
     if (!isProUser && imageGenerationCount >= 10) {
       setError("You have reached the limit of 10 image generations. Please upgrade to pro for unlimited access.");
       setIsLoading(false);
@@ -124,30 +126,27 @@ const Generator = ({ addPrediction }) => {
 
     const { seed } = e.target.elements;
 
-    const validTags = selectedTags.filter(
-      (tag) => !["naked", "vagina", "seductive", "Sharpdetails"].includes(tag)
-    );
-    const prompt = `${typeOfImage}, ${validTags.join(", ")}, naked, vagina, seductive, Sharpdetails`;
+    // Filter out invalid tags and join into a single string
+    const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
+    const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post(
-        "https://forbiddenpixels.com/api/predictions",
-        {
-          prompt: prompt,
-          seed: parseInt(seed.value),
-          width: parseInt(width),
-          height: parseInt(height),
-          num_outputs: parseInt(numOutputs),
-          userId: user.id,
-        }
-      );
+      const response = await axios.post("https://forbiddenpixels.com/api/predictions", {
+        prompt: prompt,
+        seed: parseInt(seed.value),
+        width: parseInt(width),
+        height: parseInt(height),
+        num_outputs: parseInt(numOutputs),
+        userId: user.id,
+      });
 
       console.log("Prediction Response:", response.data);
 
       setPrediction(response.data);
       intervalId = setInterval(() => pollPrediction(response.data.id), 2000);
 
-      setImageGenerationCount((prevCount) => prevCount + 1);
+      // Update the image generation count
+      setImageGenerationCount(prevCount => prevCount + 1);
     } catch (error) {
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
@@ -156,9 +155,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(
-        `https://forbiddenpixels.com/api/predictions/${id}`
-      );
+      const response = await axios.get(`https://forbiddenpixels.com/api/predictions/${id}`);
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -184,27 +181,22 @@ const Generator = ({ addPrediction }) => {
     try {
       const { seed } = document.forms[0];
 
-      const validTags = selectedTags.filter(
-        (tag) => !["naked", "vagina", "seductive", "Sharpdetails"].includes(tag)
-      );
-      const prompt = `${typeOfImage}, ${validTags.join(", ")}, naked, vagina, seductive, Sharpdetails`;
+      const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
+      const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
       if (typeof imageUrls === "string") {
         imageUrls = [imageUrls];
       }
 
       for (const url of imageUrls) {
-        await axios.post(
-          "https://forbiddenpixels.com/api/predictions/save-images",
-          {
-            prompt: prompt,
-            seed: parseInt(seed.value),
-            width: parseInt(width),
-            height: parseInt(height),
-            imageUrls: [url],
-            userId: user.id,
-          }
-        );
+        await axios.post("https://forbiddenpixels.com/api/predictions/save-images", {
+          prompt: prompt,
+          seed: parseInt(seed.value),
+          width: parseInt(width),
+          height: parseInt(height),
+          imageUrls: [url],
+          userId: user.id,
+        });
       }
     } catch (error) {
       console.error("Error saving images:", error.response ? error.response.data : error.message);
@@ -212,38 +204,49 @@ const Generator = ({ addPrediction }) => {
     }
   };
 
+  
+
+  
   const handleDownload = async (event, url, filename) => {
     event.stopPropagation();
-
+  
+    // Create a canvas element
     const img = new Image();
-    img.crossOrigin = "Anonymous";
+    img.crossOrigin = "Anonymous"; // Needed to avoid CORS issues when drawing the image on the canvas
     img.src = url;
-
+  
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+  
+      // Set canvas dimensions to the image dimensions
       canvas.width = img.width;
       canvas.height = img.height;
-
+  
+      // Draw the image onto the canvas
       ctx.drawImage(img, 0, 0);
-
-      const watermarkText = "forbiddenpixels.com";
-      ctx.font = "19px Arial";
+  
+      // Add watermark text with background
+      const watermarkText = 'forbiddenpixels.com';
+      ctx.font = '19px Arial';
       const textWidth = ctx.measureText(watermarkText).width;
       const padding = 10;
-
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  
+      // Draw background rectangle
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Black with transparency
       ctx.fillRect(canvas.width - textWidth - padding * 2, 10, textWidth + padding * 2, 30);
-
-      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-      ctx.textAlign = "right";
-      ctx.textBaseline = "top";
+  
+      // Draw watermark text
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // White with transparency
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
       ctx.fillText(watermarkText, canvas.width - 10, 10 + padding / 2);
-
-      const dataUrl = canvas.toDataURL("image/png");
-
-      const link = document.createElement("a");
+  
+      // Convert the canvas to a data URL
+      const dataUrl = canvas.toDataURL('image/png');
+  
+      // Trigger download
+      const link = document.createElement('a');
       link.href = dataUrl;
       link.download = filename;
       document.body.appendChild(link);
@@ -319,7 +322,7 @@ const Generator = ({ addPrediction }) => {
             <button type="submit" className="image_generate_btn"  disabled={isLoading}>{isLoading ? "Generating" : "Generate image"}</button>
            
             <p>Status: {prediction.status}</p>
-            {error && <p>Error: {error}</p>}
+            {/* {error && <p>Error: {error}</p>} */}
             <a href="" className="go_pro_text">
               <p>You're low on credits!</p>
               <p><b>Go pro</b> to keep generating images</p>
@@ -331,7 +334,7 @@ const Generator = ({ addPrediction }) => {
     <div className="loader_warp">
       <div className="loader"></div>
       <p>Status: {prediction.status}</p>
-      {error && <p>Error: {error}</p>}
+      {/* {error && <p>Error: {error}</p>} */}
     </div>
   ) : (
     <>

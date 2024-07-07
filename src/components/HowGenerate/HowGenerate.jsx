@@ -4,6 +4,10 @@ import { demoimg1 ,demoimg2,demoimg3, demoimg4, img10, img5, img6,img7,img8,img9
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import useAnimateOnView from "../animations/motions"
+import WW5 from "../../Assets/prompthero-prompt-0e88cd72d7f.webp"
+import WW6 from "../../Assets/prompthero-prompt-4b522f4594b.webp"
+import WW7 from "../../Assets/prompthero-prompt-18ffd7c5013.webp"
+import WW10 from "../../Assets/prompthero-prompt-17dca190cc3.webp"
 
 const HowGenerate = () => {
   
@@ -36,11 +40,11 @@ const HowGenerate = () => {
         <div className="howit_main">
             <div className="howit_imgs">
                 <div className="howit_imgs_rows">
-                    <img src={img5} alt="" />
-                    <img src={img6} alt="" />
-                    <img src={img7} alt="" />
+                    <img src={WW5} alt="" />
+                    <img src={WW6} alt="" />
+                    <img src={WW7} alt="" />
                 </div>
-                <img src={img10} alt=""className="howit_imgs_bottom" />
+                <img src={WW10} alt=""className="howit_imgs_bottom" />
             </div>
             <div className="howit_content">
               <div className="lists_boxs">
