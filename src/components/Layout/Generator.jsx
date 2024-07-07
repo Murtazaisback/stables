@@ -131,7 +131,7 @@ const Generator = ({ addPrediction }) => {
 
     try {
       const response = await axios.post(
-        "https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions",
+        "https://forbiddenpixels.com/api/predictions",
         {
           prompt: prompt,
           seed: parseInt(seed.value),
@@ -157,7 +157,7 @@ const Generator = ({ addPrediction }) => {
   const pollPrediction = async (id) => {
     try {
       const response = await axios.get(
-        `https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/${id}`
+        `https://forbiddenpixels.com/api/predictions/${id}`
       );
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
@@ -195,7 +195,7 @@ const Generator = ({ addPrediction }) => {
 
       for (const url of imageUrls) {
         await axios.post(
-          "https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/save-images",
+          "https://forbiddenpixels.com/api/predictions/save-images",
           {
             prompt: prompt,
             seed: parseInt(seed.value),
