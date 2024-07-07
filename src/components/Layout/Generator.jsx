@@ -7,7 +7,7 @@ const Generator = ({ addPrediction }) => {
   const { user, isSignedIn, isLoaded } = useUser();
   const { openSignIn, session } = useClerk();
   const [selectedTags, setSelectedTags] = useState([]);
-  const [defaultTags, setDefaultTags] = useState(["neked", "nsfw"]);
+  const [defaultTags, setDefaultTags] = useState(["naked", "nsfw"]);
   const [typeOfImage, setTypeOfImage] = useState("Women: Photography");
   const [prediction, setPrediction] = useState({ status: null, output: [] });
   const [error, setError] = useState(null);
@@ -21,19 +21,18 @@ const Generator = ({ addPrediction }) => {
   const [isProUser, setIsProUser] = useState(false);
   let intervalId;
 
-
   useEffect(() => {
-    // Fetch user subscription status and image generation count
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`);
+        const response = await axios.get(
+          `https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`
+        );
         setIsProUser(response.data.subscribed);
         setImageGenerationCount(response.data.imageGenerationCount);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-    
 
     if (user) {
       fetchUserData();
@@ -41,62 +40,7 @@ const Generator = ({ addPrediction }) => {
   }, [user]);
 
   const categories = {
-    "Base": ["model", "miss universe model", "milf", "celebrity", "bodybulider", "cyborg", "bimbo", "bollywood diva"],
-    "Number of people": ["one", "two", "several"],
-    "Body": ["big boobs", "busty", "perfect boobs", "small boobs", "abs", "big ass", "glasses", "tattos", "perfect body"],
-    "Age": ["18", "20s", "30s", "40s","50s", "60s", "70s", "80s"],
-    "Face": ["smiling", "serious", "laughing","happy", "sad", "angry", "shocked", "ahegao", "orgasm"],
-    "Hair Color": ["blonde", "brunette", "redhead", "white hair", "black hair", "green hair","purple hair", "pink hair", "ginger"],
-    "Hair Style": ["short", "long", "curly", "straight"],
-    "Ethnicity": [
-    "asian", "caucasian", "african", "hispanic",
-     "arabic",  "black", "brazilian", "british", "chinese", "czech", 
-    "dutch", "egyptian", "ethiopian", "filipina", "french", "german", "greek", "hungarian",
-    "indian", "indonesian", "irish", "italian", "japanese", "jewish", "korean", "latina", 
-    "malaysian", "middle eastern", "mongolian", "native american", "nigerian", "nilotic",
-    "persian", "polynesian", "portuguese", "russian", "scandinavian", "spanish", "swedish",
-    "thai", "turkish", "vietnamese", "white"
-],
-    "Style": [
-    "casual", "formal", "sporty",
-    "mirror selfie", "painting", "black and white", "vintage", "film photo", "soft anime",
-    "crisp anime", "soft + warm", "illustration", "dark fantasy", "warm anime", "cyberpunk",
-    "skin detail", "charcoal", "3d", "watercolor", "comic"
-],
-    "Setting": [
-    "indoor", "outdoor", "studio",
-    "bar", "bathroom", "beach", "bedroom", "bus", "cafe", "car", "casino", "cave",
-    "changing room", "church", "club", "couch", "desert", "forest", "grocery", "gym",
-    "hospital", "hot tub", "jungle", "kitchen", "lake", "locker room", "mall", "meadow",
-    "moon", "mountains", "oasis", "office", "onsen", "party", "pool", "prison",
-    "restaurant", "sauna", "shower", "snow", "stage", "street", "strip club", "tent",
-    "train", "underwater", "wedding", "yacht"
-],
-    "View": ["close-up", "front view", "side view"],
-    "Action": ["standing", "sitting", "walking", "yoga", "sleeping", "squatting", "cooking", "eating", "jumping", "working out", "t-pose", "bathing", "gaming", "plank", "massage", "bending over", "spreading legs", "cumshot", "on back", "straddling"],
-
-    "Clothing": [
-    "dress", "suit", "casual wear",
-    "nude", "60s", "70s", "80s", "90s", "angel", "apron", "basketball", "bathrobe", "bdsm",
-    "beach volleyball", "bikini", "blouse", "bodypaint", "bomber", "boots", "bow tie", "bra", "casual",
-    "cheerleader", "chemise", "choker", "clown", "construction worker", "corset", "cosplay", "crop top",
-    "daisy dukes", "devil", "dirndl", "doctor", "dominatrix", "dress", "face mask", "fantasy armor",
-    "firefighter", "fishnet", "flight attendant", "fur", "geisha", "gloves", "golf", "goth", "halloween",
-    "harem pants", "harlequin", "hat", "high heels", "high socks", "hijab", "hip hop", "jacket", "jeans",
-    "jumpsuit", "kilt", "kimono", "lab coat", "latex", "leather", "lingerie", "long skirt", "lumberjack", "maid",
-    "martial arts", "mech suit", "medieval", "mesh", "micro skirt", "microkini", "military", "mini skirt",
-    "nightgown", "ninja", "niqab", "nun", "nurse", "one piece swimsuit", "onesie", "pajamas", "panties",
-    "pantyhose", "parka", "pilot", "pirate", "police", "polo", "professor", "push-up bra", "race driver",
-    "roman", "sailor", "salwar", "santa", "sari", "satin", "scarf", "sci-fi armor", "secretary", "shirt",
-    "short shorts", "soccer", "space suit", "spandex", "sports", "sports bra", "steampunk", "stockings",
-    "stylish", "suit", "sundress", "superhero", "suspender belt", "sweater", "tailcoat", "tank top", "teacher",
-    "tennis", "tie", "tracksuit", "tuxedo", "underwear", "vest", "wedding dress", "witch"
-],
-    "Clothing Modifiers": ["ripped", "designer", "vintage"],
-    "Accessories/Objects": ["hat", "glasses", "jewelry", "diamond jewelry", "gold jewelry", "pearl jewelry"],
-    "Modifiers/Effects": ["black and white", "sepia", "HDR"],
-    "Advanced Style": ["avant-garde", "bohemian", "gothic"],
-    "Character (beta)": ["heroic", "villainous", "neutral"],
+    // your categories object
   };
 
   const handleTagSelect = (tag) => {
@@ -117,7 +61,6 @@ const Generator = ({ addPrediction }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Check if the user can generate more images
     if (!isProUser && imageGenerationCount >= 10) {
       setError("You have reached the limit of 10 image generations. Please upgrade to pro for unlimited access.");
       setIsLoading(false);
@@ -126,27 +69,30 @@ const Generator = ({ addPrediction }) => {
 
     const { seed } = e.target.elements;
 
-    // Filter out invalid tags and join into a single string
-    const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
-    const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
+    const validTags = selectedTags.filter(
+      (tag) => !["naked", "vagina", "seductive", "Sharpdetails"].includes(tag)
+    );
+    const prompt = `${typeOfImage}, ${validTags.join(", ")}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions", {
-        prompt: prompt,
-        seed: parseInt(seed.value),
-        width: parseInt(width),
-        height: parseInt(height),
-        num_outputs: parseInt(numOutputs),
-        userId: user.id,
-      });
+      const response = await axios.post(
+        "https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions",
+        {
+          prompt: prompt,
+          seed: parseInt(seed.value),
+          width: parseInt(width),
+          height: parseInt(height),
+          num_outputs: parseInt(numOutputs),
+          userId: user.id,
+        }
+      );
 
       console.log("Prediction Response:", response.data);
 
       setPrediction(response.data);
       intervalId = setInterval(() => pollPrediction(response.data.id), 2000);
 
-      // Update the image generation count
-      setImageGenerationCount(prevCount => prevCount + 1);
+      setImageGenerationCount((prevCount) => prevCount + 1);
     } catch (error) {
       setError(error.response?.data.detail || "Something went wrong");
       setIsLoading(false);
@@ -155,7 +101,9 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/${id}`);
+      const response = await axios.get(
+        `https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/${id}`
+      );
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -181,22 +129,27 @@ const Generator = ({ addPrediction }) => {
     try {
       const { seed } = document.forms[0];
 
-      const validTags = selectedTags.filter(tag => tag !== "neked" && tag !== "vagina" && tag !== "seductive" && tag !== "Sharpdetails");
-      const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
+      const validTags = selectedTags.filter(
+        (tag) => !["naked", "vagina", "seductive", "Sharpdetails"].includes(tag)
+      );
+      const prompt = `${typeOfImage}, ${validTags.join(", ")}, naked, vagina, seductive, Sharpdetails`;
 
       if (typeof imageUrls === "string") {
         imageUrls = [imageUrls];
       }
 
       for (const url of imageUrls) {
-        await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/save-images", {
-          prompt: prompt,
-          seed: parseInt(seed.value),
-          width: parseInt(width),
-          height: parseInt(height),
-          imageUrls: [url],
-          userId: user.id,
-        });
+        await axios.post(
+          "https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/save-images",
+          {
+            prompt: prompt,
+            seed: parseInt(seed.value),
+            width: parseInt(width),
+            height: parseInt(height),
+            imageUrls: [url],
+            userId: user.id,
+          }
+        );
       }
     } catch (error) {
       console.error("Error saving images:", error.response ? error.response.data : error.message);
