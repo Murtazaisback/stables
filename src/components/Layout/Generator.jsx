@@ -26,7 +26,7 @@ const Generator = ({ addPrediction }) => {
     // Fetch user subscription status and image generation count
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/user/${user.id}`);
+        const response = await axios.get(`https://forbiddenpixels.com/api/user/${user.id}`);
         setIsProUser(response.data.subscribed);
         setImageGenerationCount(response.data.imageGenerationCount);
       } catch (error) {
@@ -131,7 +131,7 @@ const Generator = ({ addPrediction }) => {
     const prompt = `${typeOfImage}, ${validTags.join(', ')}, naked, vagina, seductive, Sharpdetails`;
 
     try {
-      const response = await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions", {
+      const response = await axios.post("https://forbiddenpixels.com/api/predictions", {
         prompt: prompt,
         seed: parseInt(seed.value),
         width: parseInt(width),
@@ -155,7 +155,7 @@ const Generator = ({ addPrediction }) => {
 
   const pollPrediction = async (id) => {
     try {
-      const response = await axios.get(`https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/${id}`);
+      const response = await axios.get(`https://forbiddenpixels.com/api/predictions/${id}`);
       console.log("Polling Response:", response.data);
       setPrediction(response.data);
 
@@ -189,7 +189,7 @@ const Generator = ({ addPrediction }) => {
       }
 
       for (const url of imageUrls) {
-        await axios.post("https://ai-e.eba-ydxtv9fh.us-east-1.elasticbeanstalk.com/api/predictions/save-images", {
+        await axios.post("https://forbiddenpixels.com/api/predictions/save-images", {
           prompt: prompt,
           seed: parseInt(seed.value),
           width: parseInt(width),
