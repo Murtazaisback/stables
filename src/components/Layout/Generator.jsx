@@ -446,7 +446,7 @@ const Generator = ({ addPrediction }) => {
                 className="input_main"
                 name="seed"
                 value={seed}
-                defaultValue="1"
+                defaultValue="-1"
                 onChange={(e) => setSeed(parseInt(e.target.value))}
 
               />
