@@ -22,23 +22,23 @@ const Generator = ({ addPrediction }) => {
   let intervalId;
 
 
-  useEffect(() => {
-    // Fetch user subscription status and image generation count
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`https://api.forbiddenpixels.com/api/user/${user.id}`);
-        setIsProUser(response.data.subscribed);
-        setImageGenerationCount(response.data.imageGenerationCount);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch user subscription status and image generation count
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await axios.get(`https://api.forbiddenpixels.com/api/user/${user.id}`);
+  //       setIsProUser(response.data.subscribed);
+  //       setImageGenerationCount(response.data.imageGenerationCount);
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
     
 
-    if (user) {
-      fetchUserData();
-    }
-  }, [user]);
+  //   if (user) {
+  //     fetchUserData();
+  //   }
+  // }, [user]);
 
   const categories = {
     "Base": ["model", "miss universe model", "milf", "celebrity", "bodybulider", "cyborg", "bimbo", "bollywood diva"],
@@ -118,11 +118,11 @@ const Generator = ({ addPrediction }) => {
     setIsLoading(true);
 
     // Check if the user can generate more images
-    if (!isProUser && imageGenerationCount >= 10) {
-      setError("You have reached the limit of 10 image generations. Please upgrade to pro for unlimited access.");
-      setIsLoading(false);
-      return;
-    }
+    // if (!isProUser && imageGenerationCount >= 10) {
+    //   setError("You have reached the limit of 10 image generations. Please upgrade to pro for unlimited access.");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     const { seed } = e.target.elements;
 
@@ -172,7 +172,6 @@ const Generator = ({ addPrediction }) => {
       }
     } catch (error) {
       setError(error.response?.data.detail || "Something went wrong");
-      setIsLoading(false);
       console.error("Polling failed. Error:", error);
     }
   };
@@ -334,39 +333,36 @@ const Generator = ({ addPrediction }) => {
     <div className="loader_warp">
       <div className="loader"></div>
       <p>Status: {prediction.status}</p>
-      {/* {error && <p>Error: {error}</p>} */}
     </div>
   ) : (
     <>
       {prediction.status === "succeeded" && prediction.output.length > 0 ? (
         <div className="generated_images">
-          {Array.isArray(prediction.output)
-            ? prediction.output.map((imageUrl, index) => (
-                <div className="generated_image" key={index}>
-                  <img src={imageUrl} alt={`Generated ${index}`} />
-                  <div className="watermark">forbiddenpixels.com</div>
-                  {/* <a onClick={(e) => handleDownload(e, imageUrl, `Generated_${index}.png`)} className="menu_btn" target="_blank">Download</a> */}
-                  <div
-                    className="menu_btn"
-                    onClick={(e) => handleDownload(e, prediction.output, "Generated.png")}
-                  >
-                    Download
-                  </div>
+          {Array.isArray(prediction.output) ? (
+            prediction.output.map((imageUrl, index) => (
+              <div className="generated_image" key={index}>
+                <img src={imageUrl} alt={`Generated ${index}`} />
+                <div className="watermark">forbiddenpixels.com</div>
+                <div
+                  className="menu_btn"
+                  onClick={(e) => handleDownload(e, imageUrl, `Generated_${index}.png`)}
+                >
+                  Download
                 </div>
-              ))
-            : (
-                <div className="generated_image">
-                  <img src={prediction.output} alt="Generated" />
-                  <div className="watermark">forbiddenpixels.com</div>
-                  {/* <a onClick={(e) => handleDownload(e, prediction.output, "Generated.png")} className="menu_btn" target="_blank">Download</a> */}
-                  <div
-                    className="menu_btn"
-                    onClick={(e) => handleDownload(e, prediction.output, "Generated.png")}
-                  >
-                    Download
-                  </div>
-                </div>
-              )}
+              </div>
+            ))
+          ) : (
+            <div className="generated_image">
+              <img src={prediction.output} alt="Generated" />
+              <div className="watermark">forbiddenpixels.com</div>
+              <div
+                className="menu_btn"
+                onClick={(e) => handleDownload(e, prediction.output, "Generated.png")}
+              >
+                Download
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <React.Fragment>
@@ -377,6 +373,7 @@ const Generator = ({ addPrediction }) => {
     </>
   )}
 </div>
+
 
           <div className="generated_details">
             <div className="generation_inp">
