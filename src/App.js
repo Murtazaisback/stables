@@ -12,7 +12,7 @@ const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_FRONTEND_API;
 
 function App() {
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey="pk_test_c2VjdXJlLXNwb25nZS03Mi5jbGVyay5hY2NvdW50cy5kZXYk">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
