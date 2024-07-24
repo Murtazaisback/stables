@@ -285,7 +285,7 @@ nav {
 .header_imgs .swiper-slide img {
   display: block;
   width: 250px;
-  height: 370px;
+  height: 440px;
   object-fit: cover;
 }
 
@@ -1749,11 +1749,82 @@ button:disabled {
   font-size: 19px;
   font-family: Arial, sans-serif;
 }
+/* App.css or src/components/TermsPopup.css */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure the popup is on top */
+}
 
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* text-align: center; */
+  width: 40%;
+}
 
+.popup button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 0;
+}
 
+.popup button:hover {
+  background-color: #0056b3;
+}
 
+.blur {
+  filter: blur(20px);
+  pointer-events: none; /* Prevent interactions with blurred content */
+}
+.popup{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: left;
+  gap: 30px;
+}
+.popup h2{
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+  padding-bottom: 10px;
+}
+.warning_p{
+  color: red;
+}
+
+.popups_btn{
+  border-top: 1px solid lightgray;
+  width: 100%;
+}
 @media (max-width: 1024px) {
+  .howit_imgs_rows{
+    justify-content: space-between;
+  }
+  .popup-overlay{
+    height: 100vh;
+    align-items: flex-start;
+
+  }
+  .popup{
+    margin-top: 50px;
+    width: 80%;
+  }
   .placeholder_icon{
     margin-top: 0;
   }

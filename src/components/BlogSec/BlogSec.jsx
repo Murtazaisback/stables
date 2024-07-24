@@ -9,7 +9,7 @@ const BlogSec = () => {
   return (
     <div className='Blogs_sec'>
       <div className="container">
-        <Headings title='Check Out what our community ' spanhead='News & Blog' highlighted='generating'/>
+        <Headings title='Check Out what our community ' spanhead='Our Gallery' highlighted='generating'/>
         <div className="Blogs-sec_warp">
         </div>
       </div>
