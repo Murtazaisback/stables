@@ -1783,6 +1783,12 @@ button:disabled {
   font-weight: 600;
   margin-left: 0;
 }
+.popup ol{
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
 .popup button:hover {
   background-color: #0056b3;

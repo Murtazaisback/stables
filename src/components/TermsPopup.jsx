@@ -6,13 +6,18 @@ const TermsPopup = ({ onAccept, onDecline }) => {
     <div className="popup-overlay">
       <div className="popup">
         <h2>Welcome to forbiddenpixels</h2>
-        <p className='warning_p'>Warning, this site is for adults only. It contains AI-generated adult imagery.</p>
-        <p>By entering this website, I recognize that I am 18 years old or more. By using the site, you agree to our Terms of Service. Our privacy policy details how we collect and use your data. We use cookies for basic analytics and spam detection.</p>
-        <p>Any generations of content on this website that resemble real people are purely coincidental.</p>
+        <p className='warning_p'>age verification and disclaimer</p>
+        <p>This website generates 18+ images that are purely fictional and not of real people. Any resemblance to real persons, living or dead, is purely coincidental. By entering this site, you confirm that you are at least 18 years old.</p>
+        
+        <p>By proceeding, you acknowledge and certify that:</p>
+        <ol>
+          <li>your are 18 years of age or older.</li>
+          <li>you understand that the images are generated and any resemblance to real indiviual is coincidental.</li>
+        </ol>
         <div className='popups_btn'>
 
-        <button onClick={onAccept}>Accept</button>
-        <button onClick={onDecline}>Decline</button>
+        <button onClick={onAccept}>I am 18 years or older</button>
+        <button onClick={onDecline}>I am under 18</button>
         </div>
       </div>
     </div>
